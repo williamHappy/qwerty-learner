@@ -61,7 +61,7 @@
     "dev": "vite",
     "start": "vite",
     "build": "cross-env CI=false vite build --base=./",
-    "build:utools": "cross-env CI=false BUILD_TARGET=utools vite build --base=./",
+    "build:utools": "cross-env CI=false BUILD_TARGET=utools vite build --base=./ && node scripts/copy-utools-assets.js",
     "utools:dev": "vite --port 5173",
     "utools:copy-assets": "node scripts/copy-utools-assets.js",
     "test": "echo \"No tests\"",
