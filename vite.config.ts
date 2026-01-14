@@ -12,6 +12,43 @@ import type { PluginOption } from 'vite'
 // 判断是否为 uTools 构建模式
 const isUtools = process.env.BUILD_TARGET === 'utools'
 
+// uTools HTML 处理插件：移除网络资源引用
+function utoolsHtmlPlugin(): PluginOption {
+  return {
+    name: 'utools-html-transform',
+    apply: 'build',
+    transformIndexHtml(html) {
+      if (!isUtools) return html
+
+      // 移除 Google Analytics 相关脚本（整个 script 标签）
+      html = html.replace(/<!-- Google Analytics[\s\S]*?<\/script>/i, '')
+
+      // 移除包含网络 URL 的注释
+      html = html.replace(/\/\/\s*https?:\/\/[^\n]*/g, '')
+
+      // 移除 preconnect 和 dns-prefetch link 标签
+      html = html.replace(/<link\s+rel=["'](preconnect|dns-prefetch)["'][^>]*>/gi, '')
+
+      // 移除 canonical link
+      html = html.replace(/<link\s+rel=["']canonical["'][^>]*>/gi, '')
+
+      // 移除 source link
+      html = html.replace(/<link\s+rel=["']source["'][^>]*>/gi, '')
+
+      // 移除所有 Open Graph meta 标签
+      html = html.replace(/<!-- Open Graph[\s\S]*?(?=<!--|<title|<link|<meta name=|<script)/i, '')
+
+      // 移除所有 Twitter meta 标签
+      html = html.replace(/<!-- Twitter[\s\S]*?(?=<link|<meta name=|<script)/i, '')
+
+      // 移除 JSON-LD 结构化数据
+      html = html.replace(/<!-- Structured Data[\s\S]*?<\/script>/i, '')
+
+      return html
+    },
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
   const latestCommitHash = await new Promise<string>((resolve) => {
@@ -30,6 +67,7 @@ export default defineConfig(async ({ mode }) => {
           },
         },
       }),
+      utoolsHtmlPlugin(),
     ],
     build: {
       minify: true,
@@ -45,6 +83,8 @@ export default defineConfig(async ({ mode }) => {
             },
           }
         : {},
+      // uTools构建时不复制public目录，由copy-utools-assets.js脚本选择性复制
+      copyPublicDir: !isUtools,
     },
     base: isUtools ? './' : './',
     esbuild: {
