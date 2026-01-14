@@ -242,23 +242,23 @@ const ResultScreen = () => {
                 </div>
               </div>
               <div className="ml-2 flex flex-col items-center justify-end gap-3 text-xl">
-                <AuthorButton />
+                {/* <AuthorButton /> */}
                 {!isReviewMode && (
                   <>
                     <ShareButton />
                     <IexportWords fontSize={18} className="cursor-pointer text-gray-500" onClick={exportWords}></IexportWords>
                   </>
                 )}
-                <IconXiaoHongShu
+                {/* <IconXiaoHongShu
                   fontSize={15}
                   className="cursor-pointer text-gray-500 hover:text-red-500 focus:outline-none"
                   onClick={(e) => {
                     handleOpenInfoPanel('redBook')
                     e.currentTarget.blur()
                   }}
-                />
+                /> */}
 
-                <button
+                {/* <button
                   onClick={(e) => {
                     handleOpenInfoPanel('donate')
                     e.currentTarget.blur()
@@ -268,9 +268,9 @@ const ResultScreen = () => {
                   title="捐赠我们的项目"
                 >
                   <IconCoffee fontSize={17} className={`text-gray-500 hover:text-amber-500  focus:outline-none ${styles.imgShake}`} />
-                </button>
+                </button> */}
 
-                <button
+                {/* <button
                   onClick={(e) => {
                     handleOpenInfoPanel('community')
                     e.currentTarget.blur()
@@ -280,7 +280,7 @@ const ResultScreen = () => {
                   title="加入我们的社区"
                 >
                   <IconWechat fontSize={16} className="text-gray-500 hover:text-green-500 focus:outline-none" />
-                </button>
+                </button> */}
 
                 <a href="https://github.com/Kaiyiwing/qwerty-learner" target="_blank" rel="noreferrer" className="leading-[0px]">
                   <IconGithub fontSize={16} className="text-gray-500 hover:text-green-800 focus:outline-none" />
