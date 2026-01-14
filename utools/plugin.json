@@ -1,0 +1,36 @@
+{
+  "pluginName": "Qwerty Learner",
+  "description": "为键盘工作者设计的单词与肌肉记忆锻炼软件，支持多种词库、音标发音、默写模式",
+  "author": "Kaiyi",
+  "homepage": "https://qwerty.kaiyi.cool/",
+  "version": "1.0.0",
+  "logo": "logo.png",
+  "main": "index.html",
+  "preload": "preload.js",
+  "platform": ["win32", "darwin", "linux"],
+  "features": [
+    {
+      "code": "qwerty-learner",
+      "explain": "打开 Qwerty Learner 打字练习",
+      "cmds": ["Qwerty Learner", "打字练习", "背单词", "英语学习", "单词记忆"]
+    },
+    {
+      "code": "qwerty-cet4",
+      "explain": "CET-4 四级词汇练习",
+      "cmds": ["四级词汇", "CET-4", "cet4"]
+    },
+    {
+      "code": "qwerty-cet6",
+      "explain": "CET-6 六级词汇练习",
+      "cmds": ["六级词汇", "CET-6", "cet6"]
+    },
+    {
+      "code": "qwerty-programmer",
+      "explain": "程序员常用词汇练习",
+      "cmds": ["程序员词汇", "编程词汇", "programmer"]
+    }
+  ],
+  "development": {
+    "main": "http://localhost:5173/"
+  }
+}

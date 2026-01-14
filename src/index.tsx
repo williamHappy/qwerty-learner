@@ -13,7 +13,10 @@ import process from 'process'
 import React, { Suspense, lazy, useEffect, useState } from 'react'
 import 'react-app-polyfill/stable'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+
+// 检测是否在 uTools 环境中
+const isUtools = typeof window !== 'undefined' && (window as any).utools !== undefined
 
 const AnalysisPage = lazy(() => import('./pages/Analysis'))
 const GalleryPage = lazy(() => import('./pages/Gallery-N'))
@@ -32,9 +35,13 @@ function Root() {
     darkMode ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark')
   }, [darkMode])
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600)
+  // uTools 环境下不需要移动端检测
+  const [isMobile, setIsMobile] = useState(!isUtools && window.innerWidth <= 600)
 
   useEffect(() => {
+    // uTools 环境下不需要监听 resize
+    if (isUtools) return
+
     const handleResize = () => {
       const isMobile = window.innerWidth <= 600
       if (!isMobile) {
@@ -47,9 +54,13 @@ function Root() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // uTools 环境使用 HashRouter，其他环境使用 BrowserRouter
+  const Router = isUtools ? HashRouter : BrowserRouter
+  const basename = isUtools ? '' : REACT_APP_DEPLOY_ENV === 'pages' ? '/qwerty-learner' : ''
+
   return (
     <React.StrictMode>
-      <BrowserRouter basename={REACT_APP_DEPLOY_ENV === 'pages' ? '/qwerty-learner' : ''}>
+      <Router basename={basename}>
         <Suspense fallback={<Loading />}>
           <Routes>
             {isMobile ? (
@@ -67,8 +78,9 @@ function Root() {
             <Route path="/mobile" element={<MobilePage />} />
           </Routes>
         </Suspense>
-      </BrowserRouter>
-      <Analytics />
+      </Router>
+      {/* uTools 环境下不加载 Vercel Analytics */}
+      {!isUtools && <Analytics />}
     </React.StrictMode>
   )
 }

@@ -9,6 +9,9 @@ import Icons from 'unplugin-icons/vite'
 import { defineConfig } from 'vite'
 import type { PluginOption } from 'vite'
 
+// 判断是否为 uTools 构建模式
+const isUtools = process.env.BUILD_TARGET === 'utools'
+
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
   const latestCommitHash = await new Promise<string>((resolve) => {
@@ -30,9 +33,20 @@ export default defineConfig(async ({ mode }) => {
     ],
     build: {
       minify: true,
-      outDir: 'build',
+      outDir: isUtools ? 'utools/dist' : 'build',
       sourcemap: false,
+      // uTools 构建时需要将资源打包成相对路径
+      assetsDir: isUtools ? 'assets' : 'assets',
+      rollupOptions: isUtools
+        ? {
+            output: {
+              // uTools 插件需要将所有资源打包到一起
+              manualChunks: undefined,
+            },
+          }
+        : {},
     },
+    base: isUtools ? './' : './',
     esbuild: {
       drop: mode === 'development' ? [] : ['console', 'debugger'],
     },
