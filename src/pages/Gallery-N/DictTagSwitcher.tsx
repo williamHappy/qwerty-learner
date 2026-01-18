@@ -17,8 +17,8 @@ export default function DictTagSwitcher({ tagList, currentTag, onChangeCurrentTa
 
   return (
     <RadioGroup value={currentTag} onChange={onChangeTag}>
-      <div className="scrollbar-hide -mx-1 overflow-x-auto px-1 pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-        <div className="flex items-center space-x-4">
+      <div className="-mx-1 px-1 pb-2">
+        <div className="flex flex-wrap items-center gap-4">
           {tagList.map((option) => (
             <RadioGroup.Option
               key={option}

@@ -63,7 +63,7 @@ export default function GalleryPage() {
   return (
     <Layout>
       <GalleryContext.Provider value={{ state: galleryState, setState: setGalleryState }}>
-        <div className="relative mb-auto mt-auto flex w-full flex-1 flex-col overflow-y-auto overflow-x-hidden px-4 sm:px-8 md:px-12 lg:px-20">
+        <div className="relative mb-auto mt-auto flex w-full flex-1 flex-col overflow-y-auto px-4 sm:px-8 md:px-12 lg:px-20">
           <IconX
             className="absolute right-4 top-10 z-20 mr-2 h-7 w-7 cursor-pointer text-gray-400 sm:right-8 md:right-12 lg:right-20"
             onClick={onBack}
@@ -74,9 +74,9 @@ export default function GalleryPage() {
                 <LanguageTabSwitcher />
                 <DictRequest />
               </div>
-              <ScrollArea.Root className="flex-1 overflow-y-auto">
+              <ScrollArea.Root className="flex-1 overflow-x-auto overflow-y-auto">
                 <ScrollArea.Viewport className="h-full w-full ">
-                  <div className="mr-2 flex flex-1 flex-col items-start justify-start gap-14 pt-4 sm:mr-4">
+                  <div className="flex flex-1 flex-col items-start justify-start gap-14 pr-2 pt-4 sm:pr-4">
                     {groupedByCategoryAndTag.map(([category, groupeByTag]) => (
                       <DictionaryGroup key={category} groupedDictsByTag={groupeByTag} />
                     ))}
