@@ -13,6 +13,7 @@ import { TypingContext, TypingStateActionType, initialState, typingReducer } fro
 import { DonateCard } from '@/components/DonateCard'
 import Header from '@/components/Header'
 import Tooltip from '@/components/Tooltip'
+import { Alert, AlertTitle } from '@/components/ui/alert'
 import { idDictionaryMap } from '@/resources/dictionary'
 import { currentChapterAtom, currentDictIdAtom, isReviewModeAtom, randomConfigAtom, reviewModeInfoAtom } from '@/store'
 import { IsDesktop, isLegal } from '@/utils'
@@ -21,12 +22,14 @@ import { useMixPanelChapterLogUploader } from '@/utils/mixpanel'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useImmerReducer } from 'use-immer'
 
 const App: React.FC = () => {
+  const navigate = useNavigate()
   const [state, dispatch] = useImmerReducer(typingReducer, structuredClone(initialState))
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { words } = useWordList()
+  const { words, error } = useWordList()
 
   const [currentDictId, setCurrentDictId] = useAtom(currentDictIdAtom)
   const setCurrentChapter = useSetAtom(currentChapterAtom)
@@ -150,7 +153,19 @@ const App: React.FC = () => {
         <div className="container mx-auto flex h-full flex-1 flex-col items-center justify-center pb-5">
           <div className="container relative mx-auto flex h-full flex-col items-center">
             <div className="container flex flex-grow items-center justify-center">
-              {isLoading ? (
+              {error && (error as any).isDictionaryNotAvailable ? (
+                <div className="flex flex-col items-center justify-center space-y-4 p-8">
+                  <Alert className="max-w-md">
+                    <AlertTitle>字典数据暂未上线，敬请期待</AlertTitle>
+                  </Alert>
+                  <button
+                    onClick={() => navigate('/gallery')}
+                    className="rounded-lg bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-600"
+                  >
+                    返回词典库
+                  </button>
+                </div>
+              ) : isLoading ? (
                 <div className="flex flex-col items-center justify-center ">
                   <div
                     className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid  border-indigo-400 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"

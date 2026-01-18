@@ -21,6 +21,13 @@ export async function wordListFetcher(url: string): Promise<Word[]> {
 
     // 如果是404或其他HTTP错误，抛出错误但不影响应用其他部分
     if (!response.ok) {
+      // uTools 环境下，404 错误表示词典未包含在构建中
+      if (isUtools && response.status === 404) {
+        const error: any = new Error('字典数据暂未上线，敬请期待')
+        error.isDictionaryNotAvailable = true
+        throw error
+      }
+
       console.warn(`Failed to load dictionary from ${finalUrl}: ${response.status} ${response.statusText}`)
       throw new Error(`Dictionary not found: ${finalUrl}`)
     }
