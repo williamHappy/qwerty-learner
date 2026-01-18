@@ -39,13 +39,13 @@ export function LanguageTabSwitcher() {
 
   return (
     <RadioGroup value={state.currentLanguageTab} onChange={onChangeTab}>
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-4">
         {options.map((option) => (
           <RadioGroup.Option key={option.id} value={option.id} className="cursor-pointer">
             {({ checked }) => (
-              <div className={`flex items-center border-b-2 px-2 pb-1 ${checked ? 'border-indigo-500' : 'border-transparent'}`}>
-                <img src={option.flag} className="mr-1.5 h-7 w-7" />
-                <p className={`text-lg font-medium text-gray-700 dark:text-gray-200`}>{option.name}</p>
+              <div className={`flex items-center border-b-2 px-1 pb-1 sm:px-2 ${checked ? 'border-indigo-500' : 'border-transparent'}`}>
+                <img src={option.flag} className="mr-1 h-5 w-5 sm:mr-1.5 sm:h-7 sm:w-7" />
+                <p className={`text-base font-medium text-gray-700 dark:text-gray-200 sm:text-lg`}>{option.name}</p>
               </div>
             )}
           </RadioGroup.Option>
